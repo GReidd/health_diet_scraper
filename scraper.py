@@ -4,6 +4,7 @@ import json
 import csv
 from time import sleep
 from random import randrange
+import os
 
 url = "https://health-diet.ru/table_calorie"
 
@@ -40,6 +41,11 @@ iterations_count = int(len(all_categories)) - 1
 count = 0
 
 print(f"Всего итераций: {iterations_count}")
+
+directort_data = "data"
+
+if not os.path.exists(directort_data):
+    os.makedirs(directort_data)
 
 for category_name, category_url in all_categories.items():
 
