@@ -14,10 +14,10 @@ headers = {
 req = requests.get(url, headers=headers)
 src = req.text
 
-with open("health_diet_scrapper/index.html", "w", encoding="utf-8") as file:
+with open("index.html", "w", encoding="utf-8") as file:
     file.write(src)
 
-with open("health_diet_scrapper/index.html", encoding="utf-8") as file:
+with open("index.html", encoding="utf-8") as file:
     src = file.read()
 
 soup = BeautifulSoup(src, "lxml")
@@ -29,12 +29,10 @@ for item in all_products_hrefs:
     item_url = "https://health-diet.ru" + item.get("href")
     all_categories_dict[item_text] = item_url
 
-with open(
-    "health_diet_scrapper/all_categories_dict.json", "w", encoding="utf8"
-) as file:
+with open("all_categories_dict.json", "w", encoding="utf8") as file:
     json.dump(all_categories_dict, file, indent=4, ensure_ascii=False)
 
-with open("health_diet_scrapper/all_categories_dict.json", encoding="utf8") as file:
+with open("all_categories_dict.json", encoding="utf8") as file:
     all_categories = json.load(file)
 
 iterations_count = int(len(all_categories)) - 1
@@ -53,14 +51,10 @@ for category_name, category_url in all_categories.items():
     req = requests.get(category_url, headers=headers)
     src = req.text
 
-    with open(
-        f"health_diet_scrapper/data/{count}_{category_name}.html", "w", encoding="utf-8"
-    ) as file:
+    with open(f"data/{count}_{category_name}.html", "w", encoding="utf-8") as file:
         file.write(src)
 
-    with open(
-        f"health_diet_scrapper/data/{count}_{category_name}.html", encoding="utf-8"
-    ) as file:
+    with open(f"data/{count}_{category_name}.html", encoding="utf-8") as file:
         src = file.read()
 
     soup = BeautifulSoup(src, "lxml")
@@ -79,7 +73,7 @@ for category_name, category_url in all_categories.items():
     carbohydrates = table_head[4].text
 
     with open(
-        f"health_diet_scrapper/data/{count}_{category_name}.csv",
+        f"data/{count}_{category_name}.csv",
         "w",
         encoding="utf-8-sig",
         newline="",
@@ -112,7 +106,7 @@ for category_name, category_url in all_categories.items():
         )
 
         with open(
-            f"health_diet_scrapper/data/{count}_{category_name}.csv",
+            f"data/{count}_{category_name}.csv",
             "a",
             encoding="utf-8-sig",
             newline="",
@@ -120,9 +114,7 @@ for category_name, category_url in all_categories.items():
             writer = csv.writer(file, delimiter=";")
             writer.writerow((title, calories, proteins, fats, carbohydrates))
 
-    with open(
-        f"health_diet_scrapper/data/{count}_{category_name}.json", "a", encoding="utf-8"
-    ) as file:
+    with open(f"data/{count}_{category_name}.json", "a", encoding="utf-8") as file:
         json.dump(products_info, file, indent=4, ensure_ascii=False)
 
     count += 1
